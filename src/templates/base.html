@@ -1,0 +1,23 @@
+<!doctype html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<header id="header">
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="logo" width="20" height="20">
+    {% if g.user %}
+    <div><span>Hello, {{ g.user['username'] }}</span></div>
+    <div class="nav_btn" id="logout"><a href="{{ url_for('logout') }}">Log Out</a></div>
+    {% else %}
+    <div class="nav_btn" id="signin"><a href="{{ url_for('signup') }}">Register</a></div>
+    <div class="nav_btn" id="login"><a href="{{ url_for('login') }}">Log In</a></div>
+    {% endif %}
+</header>
+
+<div id="content">
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</div>

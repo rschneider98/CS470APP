@@ -1,0 +1,40 @@
+#header {
+    width: 100%;
+    height: 50px;
+    background-color: #cccccc;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.nav_btn {
+    border: 2px;
+    border-color: #000000;
+}
+
+#login {
+    background-color: blue;
+}
+
+#logout {
+    background-color: blue;
+}
+
+#signup {
+    background-color: orange;
+}
+
+.flash{
+    width:100%;
+    padding: 0;
+    margin: 0;
+    background-color: red;
+}
+
+#content{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}

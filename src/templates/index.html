@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Music Library{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>Browse Music and Playlists</h1>
+    <form action="/action_page.php">
+      <input type="text" id="search" name="search">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+{% endblock %}
