@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forms.css') }}">
+{% endblock %}
+
 {% block header %}
-  <h1>{% block title %}Login{% endblock %}</h1>
+  <h1>{% block title %}Log In{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log in">
+<div id="id01" class="modal">
+  <form class="modal-content" method="post">
+    <div class="container">
+      <label for="username" class="form_elem">Username</label>
+      <input type="text" name="username" id="username" class="form_elem" placeholder="Enter Username" required>
+      <label for="password" class="form_elem">Password</label>
+      <input type="password" name="password" id="password" class="form_elem" placeholder="Enter Password" required>
+
+      <button type="submit">Register</button>
+    </div>
   </form>
+</div>
 {% endblock %}

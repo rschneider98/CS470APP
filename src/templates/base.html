@@ -1,19 +1,22 @@
 <!doctype html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
 </head>
-<header id="header">
-    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="logo" width="20" height="20">
-    {% if g.user %}
-    <div><span>Hello, {{ g.user['username'] }}</span></div>
-    <div class="nav_btn" id="logout"><a href="{{ url_for('logout') }}">Log Out</a></div>
+<body>
+<div class="topnav">
+    <a class="active" href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+    {% if user is defined %}
+    <span>Hello, {{user}}</span>
+    <a href="{{ url_for('logout') }}" style="float:right">Logout</a>
     {% else %}
-    <div class="nav_btn" id="signin"><a href="{{ url_for('signup') }}">Register</a></div>
-    <div class="nav_btn" id="login"><a href="{{ url_for('login') }}">Log In</a></div>
+    <a href="{{ url_for('signup') }}" style="float:right;background-color:#3333ff">Sign Up</a>
+    <a href="{{ url_for('login') }}" style="float:right">Log In</a>
     {% endif %}
-</header>
+</div>
 
 <div id="content">
   {% for message in get_flashed_messages() %}
@@ -21,3 +24,6 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </div>
+
+</body>
+</html>
