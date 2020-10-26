@@ -65,8 +65,10 @@ def contact():
 def signup():
     if request.method == 'POST':
         # verify that the passwords match
-        # verify that the username and email are unused
+        # verify that the username and email are unused and
         # update the user information with the new data
+        # tutorial on sql: https://chartio.com/resources/tutorials/how-to-execute-raw-sql-in-sqlalchemy/
+        # https://stackoverflow.com/questions/20971680/sql-server-insert-if-not-exists
         pass
     # create page to allow users to sign up
     return render_template("signup.html")
@@ -109,5 +111,5 @@ def sitemap():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    pass
+    app.run(use_reloader=True)
 
