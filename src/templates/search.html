@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}Music Library | {{ search_term }}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<table>
+<thead>
+{%- for column in columns %}
+     <th>{{ column }}</th>
+{%- endfor %}
+</thead>
+
+<tbody>
+{%- for row in rows %}
+    <tr onclick="window.location='{{ url_for('browse') }}/{{ row[0] }}';">
+    {%- for i in range(1, (row | length)) -%}
+        <td><a href="{{ url_for('browse') }}/{{ row[0] }}">{{ row[i] }}</a></td>
+    {%- endfor %}
+    </tr>
+{%- endfor %}
+</tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}Music Library | {{ title }}{% endblock %}
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='sidebar.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="sidebar">
+    <table id="playlists">
+        <tr><td>Chill Playlist</td></tr>
+        <tr><td>Running</td></tr>
+        <tr><td>Sleep</td></tr>
+        <tr><td>Add Playlist</td></tr>
+    </table>
+
+    <div id="bottom-info">
+        <p style="margin:0;">Adding Songs: Sleep</p>
+        <button>Stop</button>
+    </div>
+</div>
+
+<div id="main">
+<h1 id="title">{{ title }}</h1>
+<h2 id="subtitle">{{ subtitle}}</h2>
+<table id="results">
+<thead>
+    <th>#</th>
+    <th>Title</th>
+    <th>Artist</th>
+    <th>Album</th>
+    <th>Spotify</th>
+</thead>
+<tbody>
+{%- for row in rows %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td onclick="window.location.href='{{ url_for('browse_artist', artist=row[4]) }}';">{{ row[2] }}</td>
+        <td onclick="window.location.href='{{ url_for('browse_album', artist=row[4], album=row[5]) }}';">{{ row[3] }}</td>
+        <td onclick="window.location.href='https://spotify.com/{{ row[6] }}';">LINK</td>
+    </tr>
+{%- endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

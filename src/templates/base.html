@@ -10,8 +10,8 @@
     <a href="{{ url_for('about') }}">About</a>
     <a href="{{ url_for('contact') }}">Contact</a>
     {% if user is defined %}
-    <span>Hello, {{user}}</span>
     <a href="{{ url_for('logout') }}" style="float:right">Logout</a>
+    <a href="/" style="float:right">Hello, {{user}}</a>
     {% else %}
     <a href="{{ url_for('signup') }}" style="float:right;background-color:#3333ff">Sign Up</a>
     <a href="{{ url_for('login') }}" style="float:right">Log In</a>
