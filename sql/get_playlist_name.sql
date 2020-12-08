@@ -1,1 +1,1 @@
-/* return name and playlist id for each of a user's playlists */
+/* return name of playlist for id */

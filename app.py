@@ -189,7 +189,21 @@ def browse():
             ("15", "peace", "Taylor Swift", "folklore", "1", "7", "LINK"),
             ("16", "hoax", "Taylor Swift", "folklore", "1", "7", "LINK"),
         ]
-        return render_template("browse.html", user=user, rows=rows, title=title, subtitle=subtitle)
+
+        with open('sql/get_playlist_names.sql', mode='r') as f:
+            f_text = f.read()
+        query = text(f_text)
+        with engine.connect() as connection:
+            result = connection.execute(
+                query,
+                user_id=user
+            )
+            # process result into keys and values (fetchall should not be a problem here)
+            keys = result.keys()
+            values = result.fetchall()
+            playlists = values
+
+        return render_template("browse.html", user=user, rows=rows, title=title, playlists=playlists, subtitle=subtitle)
     return redirect(url_for('login'))
 
 
@@ -226,8 +240,20 @@ def browse_playlist(playlist):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
-            playlists = values
             name = values[0][0]
+
+        with open('sql/get_playlist_names.sql', mode='r') as f:
+            f_text = f.read()
+        query = text(f_text)
+        with engine.connect() as connection:
+            result = connection.execute(
+                query,
+                user_id=user
+            )
+            # process result into keys and values (fetchall should not be a problem here)
+            keys = result.keys()
+            values = result.fetchall()
+            playlists = values
 
         # call separate sql with sqlalchemy to get name of playlist, user name, etc.
         return render_template("browse.html", user=user, rows=rows, playlists=playlists, title=name)
@@ -267,8 +293,20 @@ def browse_album(artist, album):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
-            playlists = values
             name = values[0][0]
+
+        with open('sql/get_playlist_names.sql', mode='r') as f:
+            f_text = f.read()
+        query = text(f_text)
+        with engine.connect() as connection:
+            result = connection.execute(
+                query,
+                user_id=user
+            )
+            # process result into keys and values (fetchall should not be a problem here)
+            keys = result.keys()
+            values = result.fetchall()
+            playlists = values
 
         # call separate sql with sqlalchemy to get name of playlist, user name, etc.
         return render_template("browse.html", user=user, rows=rows, playlists=playlists, title=name)
@@ -308,8 +346,20 @@ def browse_artist(artist):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
-            playlists = values
             name = values[0][0]
+
+        with open('sql/get_playlist_names.sql', mode='r') as f:
+            f_text = f.read()
+        query = text(f_text)
+        with engine.connect() as connection:
+            result = connection.execute(
+                query,
+                user_id=user
+            )
+            # process result into keys and values (fetchall should not be a problem here)
+            keys = result.keys()
+            values = result.fetchall()
+            playlists = values
 
         return render_template("browse_albums.html", user=user, rows=rows, playlists=playlists, title=name)
     return redirect(url_for('login'))
