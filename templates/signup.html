@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forms.css') }}">
+{% endblock %}
+
+{% block header %}
+  <h1>{% block title %}Sign Up{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div id="id01" class="modal">
+  <form class="modal-content" method="post">
+    <div class="container">
+      <label for="email" class="form_elem">Email</label>
+      <input type="text" name="email" id="email" class="form_elem" placeholder="Enter Email" required>
+      <label for="first_name" class="form_elem">First Name</label>
+      <input type="text" name="email" id="first_name" class="form_elem" placeholder="First Name" required>
+      <label for="last_name" class="form_elem">Last Name</label>
+      <input type="text" name="last_name" id="last_name" class="form_elem" placeholder="Last Name" required>
+      <label for="username" class="form_elem">Username</label>
+      <input type="text" name="username" id="username" class="form_elem" placeholder="Enter Username" required>
+      <label for="password" class="form_elem">Password</label>
+      <input type="password" name="password" id="password" class="form_elem" placeholder="Enter Password" required>
+      <label for="password" class="form_elem">Confirm Password</label>
+      <input type="password" name="confirm_password" id="confirm_password" class="form_elem" placeholder="Reenter Password" required>
+
+      <button type="submit">Register</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Music Library{% endblock %}
+
+{% block head %}
+<style>
+  body {
+    /* image from pexels: https://www.pexels.com/photo/black-vinyl-record-playing-on-turntable-1389429/ */
+    background: url({{ url_for('static', filename='images/home_bkgd.jpg') }}) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div id="centered" style="text-align:center; margin-top: 10%;">
+    <h1>Browse Music and Playlists</h1>
+    <form action="{{ url_for('browse') }}">
+      <input type="text" id="search" name="search">
+      <input type="submit" value="Search">
+    </form>
+  </div>
+{% endblock %}

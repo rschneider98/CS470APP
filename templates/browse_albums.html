@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}Music Library | {{ title }}{% endblock %}
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='sidebar.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="sidebar">
+<table id="playlists">
+    <tr><td>Chill Playlist</td></tr>
+    <tr><td>Running</td></tr>
+    <tr><td>Sleep</td></tr>
+    <tr><td>Add Playlist</td></tr>
+</table>
+</div>
+
+<div id="main">
+<h1 id="title">{{ title }}</h1>
+<h2 id="subtitle">{{ subtitle}}</h2>
+<table id="results">
+<thead>
+    <th>#</th>
+    <th>Album</th>
+    <th>Year</th>
+</thead>
+
+<tbody>
+{%- for row in rows %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td><a href="{{ url_for('browse_album', artist=row[3], album=row[4]) }}">{{ row[1] }}</a></td>
+        <td>{{ row[2] }}</td>
+    </tr>
+{%- endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

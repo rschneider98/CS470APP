@@ -1,0 +1,43 @@
+body {
+    background-color: #666666;
+}
+
+#title, #subtitle {
+    color: white;
+    background-color: #666666;
+    margin: 0;
+    padding: 5px 0 5px 20px;
+}
+
+#sidebar {
+    float:left;
+    position: fixed;
+    left:0;
+    top: 48px;
+    height: 100%;
+    width: 15%;
+    background-color: #666666;
+}
+
+#main {
+    width: 85%;
+    float: right;
+    margin-top: 48px;
+}
+
+#playlists {
+    font-size: 18px;
+    width: 100%;
+    color: white;
+    padding: 5px;
+    overflow: hidden;
+}
+
+#bottom-info {
+    width: 14%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0 0 1% 1%;
+}
