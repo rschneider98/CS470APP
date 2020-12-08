@@ -86,7 +86,7 @@ def signup():
         # update the user information with the new data
         salt = token_bytes(8)
         hashed_pwd = hashlib.sha3_256(b''.join([salt, bytes(password, 'utf=8')])).digest()
-        with open('add_user.sql', mode='r') as f:
+        with open('sql/add_user.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         try:
@@ -121,7 +121,7 @@ def login():
             return redirect(url_for('browse'))
 
         # SQL request to get salt and hash of the user
-        with open('validate_user.sql', mode='r') as f:
+        with open('sql/validate_user.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -201,7 +201,7 @@ def browse_playlist(playlist):
     if user is not None:
         # get the information requested
         # the songs in the playlist in order of: index, song name, artist name, album, artist id, album id
-        with open('get_playlist_songs.sql', mode='r') as f:
+        with open('sql/get_playlist_songs.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -215,7 +215,7 @@ def browse_playlist(playlist):
 
         rows = [[i + 1] + list(values[i]) for i in range(len(values))]
 
-        with open('get_playlist_name.sql', mode='r') as f:
+        with open('sql/get_playlist_name.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -226,10 +226,11 @@ def browse_playlist(playlist):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
+            playlists = values
             name = values[0][0]
 
         # call separate sql with sqlalchemy to get name of playlist, user name, etc.
-        return render_template("browse.html", user=user, rows=rows, title=name)
+        return render_template("browse.html", user=user, rows=rows, playlists=playlists, title=name)
     return redirect(url_for('login'))
 
 
@@ -239,7 +240,7 @@ def browse_album(artist, album):
     # use the url parameters to define different access paths
     user = session.get('user')
     if user is not None:
-        with open('get_album.sql', mode='r') as f:
+        with open('sql/get_album.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -254,7 +255,7 @@ def browse_album(artist, album):
 
         rows = [[i + 1] + list(values[i]) for i in range(len(values))]
 
-        with open('get_album_name.sql', mode='r') as f:
+        with open('sql/get_album_name.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -266,10 +267,11 @@ def browse_album(artist, album):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
+            playlists = values
             name = values[0][0]
 
         # call separate sql with sqlalchemy to get name of playlist, user name, etc.
-        return render_template("browse.html", user=user, rows=rows, title=name)
+        return render_template("browse.html", user=user, rows=rows, playlists=playlists, title=name)
     return redirect(url_for('login'))
 
 
@@ -281,7 +283,7 @@ def browse_artist(artist):
     if user is not None:
         # get the information requested
         # columns will be index, album name, year of release, artist id, album id
-        with open('get_artist.sql', mode='r') as f:
+        with open('sql/get_artist.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -295,7 +297,7 @@ def browse_artist(artist):
 
         rows = [[i + 1] + list(values[i]) for i in range(len(values))]
 
-        with open('get_artist_name.sql', mode='r') as f:
+        with open('sql/get_artist_name.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
         with engine.connect() as connection:
@@ -306,9 +308,10 @@ def browse_artist(artist):
             # process result into keys and values (fetchall should not be a problem here)
             keys = result.keys()
             values = result.fetchall()
+            playlists = values
             name = values[0][0]
 
-        return render_template("browse_albums.html", user=user, rows=rows, title=title)
+        return render_template("browse_albums.html", user=user, rows=rows, playlists=playlists, title=name)
     return redirect(url_for('login'))
 
 

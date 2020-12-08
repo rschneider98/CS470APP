@@ -12,9 +12,11 @@
 {% block content %}
 <div id="sidebar">
     <table id="playlists">
-        <tr><td>Chill Playlist</td></tr>
-        <tr><td>Running</td></tr>
-        <tr><td>Sleep</td></tr>
+        {%- for playlist in playlists %}
+            <tr>
+                <td onclick="window.location.href='{{ url_for('browse_playlist', playlist=playlist[1]) }}';">{{ playlist[0] }}</td>
+            </tr>
+        {%- endfor %}
         <tr><td>Add Playlist</td></tr>
     </table>
 
