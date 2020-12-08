@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd       # used to execute SQL statements on sqlalchemy engine
 import hashlib            # cryptographic hash for user verification
 from secrets import token_bytes
+from collections import Counter
 
 # SET ENVIRONMENT VARIABLES FOR DB
 # since this will be run at the same location as DB these are formatted for local connections to DB
@@ -164,31 +165,40 @@ def logout():
 @app.route('/browse')
 def browse():
     # webpage to allow user to browse search results
+    # NOTE: Better preprocessing and a separate python file for the search function could
+    # greatly improve the results of this search
     user = session.get('user')
     if user is not None:
         # show user's playlists
         # get the information requested
-
-        title = "folklore"
-        subtitle = "Taylor Swift"
-        rows = [
-            ("1", "the 1", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("2", "cardigan", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("3", "the last great american dynasty", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("4", "exile (feat. Bon Iver)", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("5", "my tears ricochet", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("6", "mirrorball", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("7", "seven", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("8", "august", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("9", "this is me trying", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("10", "illicit affairs", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("11", "invisible string", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("12", "mad woman", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("13", "epiphany", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("14", "betty", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("15", "peace", "Taylor Swift", "folklore", "1", "7", "LINK"),
-            ("16", "hoax", "Taylor Swift", "folklore", "1", "7", "LINK"),
-        ]
+        search_string = ""
+        title = search_string
+        with open('sql/get_basic_search.sql', mode='r') as f:
+            f_text = f.read()
+        query = text(f_text)
+        with engine.connect() as connection:
+            query_outputs = []
+            for search in search_string.split()[:10]:
+                result = connection.execute(
+                    query,
+                    search_string=search.strip().upper()
+                )
+                # process result into keys and values (fetchall should not be a problem here)
+                keys = result.keys()
+                query_outputs += result.fetchmany(200)
+        # get the number of occurrences for our multiple searches (which are limited by the top 200)
+        # preprocessing would not have to rely on the individual searches and the song's popularity
+        # converts all results to a dict and counts song ids to return the top 20
+        combined_data_dict = dict(zip(keys, np.array(query_outputs).transpose().tolist()))
+        df = pd.DataFrame(combined_data_dict)
+        top20_index = df.value_counts('songID').index.to_list()[:20]
+        records = df.set_index("songID").loc[top20_index].reset_index().drop_duplicates().to_dict('list')
+        values = [x for x in zip(records['songName'][:20],
+                                 records['artistName'][:20],
+                                 records['albumName'][:20],
+                                 records['artistID'][:20],
+                                 records['albumID'][:20])]
+        rows = [[i + 1] + list(values[i]) for i in range(len(values))]
 
         with open('sql/get_playlist_names.sql', mode='r') as f:
             f_text = f.read()
