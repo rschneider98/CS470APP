@@ -20,6 +20,7 @@ from sqlalchemy.exc import IntegrityError
 import numpy as np
 import pandas as pd       # used to execute SQL statements on sqlalchemy engine
 import hashlib            # cryptographic hash for user verification
+from math import log, e
 from secrets import token_bytes
 
 # SET ENVIRONMENT VARIABLES FOR DB
@@ -37,6 +38,32 @@ engine = sql.create_engine(f'mysql+mysqlconnector://{dbuser}:{pwd}@{host}:{port}
 # SET UP FLASK APPLICATION
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ['FLASK_KEY']
+
+
+def shannon_entropy(labels, base=None):
+    """ Computes entropy of label distribution (str converted to list)
+    From Stackoverflow: https://stackoverflow.com/questions/15450192/fastest-way-to-compute-entropy-in-python"""
+
+    n_labels = len(labels)
+
+    if n_labels <= 1:
+        return 0
+
+    value, counts = np.unique(labels, return_counts=True)
+    probs = counts / n_labels
+    n_classes = np.count_nonzero(probs)
+
+    if n_classes <= 1:
+        return 0
+
+    ent = 0.
+
+    # Compute entropy
+    base = e if base is None else base
+    for i in probs:
+        ent -= i * log(i, base)
+
+    return ent
 
 
 @app.route('/')
@@ -81,6 +108,13 @@ def signup():
         # verify that the passwords match
         if password != confirm_password:
             flash("Passwords must match")
+            return render_template("signup.html")
+        # verify that the password is strong enough
+        # based on shannon entropy of the string
+        # the cutoff of 2 was chosen based on trial-and-error with hypothetical passwords
+        strength = shannon_entropy(list(password))
+        if strength < 2:
+            flash("Please use a stronger password, consider different cases, numbers, or special characters")
             return render_template("signup.html")
         # verify that the username and email are unused and
         # update the user information with the new data
