@@ -21,7 +21,6 @@ import numpy as np
 import pandas as pd       # used to execute SQL statements on sqlalchemy engine
 import hashlib            # cryptographic hash for user verification
 from secrets import token_bytes
-from collections import Counter
 
 # SET ENVIRONMENT VARIABLES FOR DB
 # since this will be run at the same location as DB these are formatted for local connections to DB
@@ -181,7 +180,7 @@ def browse():
             for search in search_string.split()[:10]:
                 result = connection.execute(
                     query,
-                    search_string=search.strip().upper()
+                    search_string=f'%{search.strip().upper()}%'
                 )
                 # process result into keys and values (fetchall should not be a problem here)
                 keys = result.keys()
@@ -213,7 +212,7 @@ def browse():
             values = result.fetchall()
             playlists = values
 
-        return render_template("browse.html", user=user, rows=rows, title=title, playlists=playlists, subtitle=subtitle)
+        return render_template("browse.html", user=user, rows=rows, title=title, playlists=playlists)
     return redirect(url_for('login'))
 
 
@@ -282,7 +281,6 @@ def browse_album(artist, album):
         with engine.connect() as connection:
             result = connection.execute(
                 query,
-                artist_id=artist,
                 album_id=album
             )
             # process result into keys and values (fetchall should not be a problem here)
@@ -297,7 +295,6 @@ def browse_album(artist, album):
         with engine.connect() as connection:
             result = connection.execute(
                 query,
-                artist_id=artist,
                 album_id=album
             )
             # process result into keys and values (fetchall should not be a problem here)
@@ -378,4 +375,3 @@ def browse_artist(artist):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     app.run(use_reloader=True)
-
