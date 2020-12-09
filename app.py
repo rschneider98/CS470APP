@@ -102,7 +102,7 @@ def signup():
             flash("Username or Email already taken")
             return render_template("signup.html")
         session['user'] = username
-        return redirect(url_for('browse'))
+        return redirect(url_for('index'))
     # create page to allow users to sign up
     return render_template("signup.html")
 
@@ -118,7 +118,7 @@ def login():
         # REMOVE: for testing purpose only
         if submitted_user == "admin" and submitted_pwd == "admin":
             session['user'] = submitted_user
-            return redirect(url_for('browse'))
+            return redirect(url_for('index'))
 
         # SQL request to get salt and hash of the user
         with open('sql/validate_user.sql', mode='r') as f:
@@ -148,7 +148,7 @@ def login():
             else:
                 flash("Username and Password do not match")
                 return render_template("login.html")
-        return redirect(url_for('browse'))
+        return redirect(url_for('index'))
     else:
         return render_template("login.html")
 
@@ -170,7 +170,7 @@ def browse():
     if user is not None:
         # show user's playlists
         # get the information requested
-        search_string = ""
+        search_string = request.args.get('search')
         title = search_string
         with open('sql/get_basic_search.sql', mode='r') as f:
             f_text = f.read()
@@ -186,7 +186,7 @@ def browse():
                 keys = result.keys()
                 query_outputs += result.fetchmany(200)
         # get the number of occurrences for our multiple searches (which are limited by the top 200)
-        # preprocessing would not have to rely on the individual searches and the song's popularity
+        # preprocessing would not have to rely on the individual searches
         # converts all results to a dict and counts song ids to return the top 20
         combined_data_dict = dict(zip(keys, np.array(query_outputs).transpose().tolist()))
         df = pd.DataFrame(combined_data_dict)

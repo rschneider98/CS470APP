@@ -18,7 +18,7 @@
 {% block content %}
   <div id="centered" style="text-align:center; margin-top: 10%;">
     <h1>Browse Music and Playlists</h1>
-    <form action="{{ url_for('browse') }}">
+    <form action="{{ url_for('browse') }}" method="get">
       <input type="text" id="search" name="search">
       <input type="submit" value="Search">
     </form>
