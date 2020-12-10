@@ -1,6 +1,7 @@
 /* return album name, album year, and album id for an artist id - order by year */
 
-SELECT albumName, albumDate, albumID
+SELECT album.albumName, artist.artistID, album.albumID
 FROM album
-WHERE artistID = :artist_id
-ORDER BY albumDate;
+LEFT JOIN artist
+ON artist.artistID = album.albumID
+WHERE artistID = :artist_id;

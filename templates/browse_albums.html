@@ -28,7 +28,6 @@
 <thead>
     <th>#</th>
     <th>Album</th>
-    <th>Year</th>
 </thead>
 
 <tbody>
@@ -36,7 +35,6 @@
     <tr>
         <td>{{ row[0] }}</td>
         <td><a href="{{ url_for('browse_album', artist=row[3], album=row[4]) }}">{{ row[1] }}</a></td>
-        <td>{{ row[2] }}</td>
     </tr>
 {%- endfor %}
 </tbody>
