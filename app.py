@@ -118,8 +118,8 @@ def signup():
             return render_template("signup.html")
         # verify that the username and email are unused and
         # update the user information with the new data
-        salt = token_bytes(8)
-        hashed_pwd = hashlib.sha3_256(b''.join([salt, bytes(password, 'utf=8')])).digest()
+        salt = str(token_bytes(8))[:32]
+        hashed_pwd = hashlib.sha3_256(bytes(''.join([salt, password]), 'utf=8')).digest()
         with open('sql/add_user.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
