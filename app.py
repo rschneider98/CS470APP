@@ -214,7 +214,7 @@ def browse():
             for search in search_string.split()[:10]:
                 result = connection.execute(
                     query,
-                    search_string=f'%{search.strip().upper()}%'
+                    search_string=f'%%{search.strip().upper()}%%'
                 )
                 # process result into keys and values (fetchall should not be a problem here)
                 keys = result.keys()
