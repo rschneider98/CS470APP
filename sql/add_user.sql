@@ -5,8 +5,8 @@ INSERT INTO user (
     userPassword,
     salt,
     userEmail,
-    userFirst,
-    userLast)
+    firstName,
+    lastName)
 VALUES (
     :user_name,
     :user_password,
