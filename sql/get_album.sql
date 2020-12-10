@@ -4,6 +4,6 @@ SELECT song.songName, artist.artistName, album.albumName, artist.artistID, album
 FROM album
 LEFT JOIN song
     ON album.albumID = song.albumID
-    WHERE album.albumID = :album_id
 INNER JOIN artist
-    ON album.artistID = artist.artistID;
+    ON album.artistID = artist.artistID
+    WHERE album.albumID = :album_id;

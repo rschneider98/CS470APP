@@ -4,8 +4,8 @@ SELECT song.songName, artist.artistName, album.albumName, artist.artistID, album
 FROM playlist
 LEFT JOIN song
     ON playlist.songID = song.songID
-    WHERE playlistID = :playlist_id
 INNER JOIN artist
     ON song.artistID = artist.artistID
 INNER JOIN album
-    ON song.albumID = album.albumID;
+    ON song.albumID = album.albumID
+    WHERE playlistID = :playlist_id;
