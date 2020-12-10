@@ -3,5 +3,5 @@
 SELECT album.albumName, artist.artistID, album.albumID
 FROM album
 LEFT JOIN artist
-ON artist.artistID = album.albumID
-WHERE artistID = :artist_id;
+ON artist.artistID = album.artistID
+WHERE artist.artistID = :artist_id;

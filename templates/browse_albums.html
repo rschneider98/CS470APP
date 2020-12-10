@@ -34,7 +34,7 @@
 {%- for row in rows %}
     <tr>
         <td>{{ row[0] }}</td>
-        <td><a href="{{ url_for('browse_album', artist=row[3], album=row[4]) }}">{{ row[1] }}</a></td>
+        <td><a href="{{ url_for('browse_album', artist=row[2], album=row[3]) }}">{{ row[1] }}</a></td>
     </tr>
 {%- endfor %}
 </tbody>
