@@ -119,7 +119,7 @@ def signup():
         # verify that the username and email are unused and
         # update the user information with the new data
         salt = str(token_bytes(8))[:32]
-        hashed_pwd = hashlib.sha3_256(bytes(''.join([salt, password]), 'utf=8')).digest()
+        hashed_pwd = str(hashlib.sha3_256(bytes(''.join([salt, password]), 'utf=8')).digest())[:150]
         with open('sql/add_user.sql', mode='r') as f:
             f_text = f.read()
         query = text(f_text)
