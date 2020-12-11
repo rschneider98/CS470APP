@@ -7,4 +7,4 @@ LEFT JOIN album
     ON song.albumID = album.albumID
 INNER JOIN artist
     ON song.artistID = artist.artistID
-    WHERE UPPER(song) like :search_string;
+    WHERE UPPER(song.songName) like :search_string;
